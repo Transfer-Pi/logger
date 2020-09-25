@@ -1,2 +1,6 @@
 .build
-*__pycache__
+*__pycache__*
+build/
+dist/
+test.py
+logger_codekage.egg-info
