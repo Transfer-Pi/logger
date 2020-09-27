@@ -14,43 +14,38 @@ COLORS = {
     "white": "\u001b[37m",
 }
 
+class HEADER:
+    color  = None
+    header = None
 
-def error(msg:str)->str:
+class MESSAGE:
+    color  = COLORS['blue']
+    header = 'MSG'
+
+class ERROR:
+    color  = COLORS['red']
+    header = "ERR"
+
+class SUCCESS:
+    color  = COLORS['green']
+    header = "ERR"
+
+class WARNING:
+    color  = COLORS['yellow']
+    header = "WRN"
+
+class SIMPLE:
+    color  = COLORS['white']
+    header = "LOG"
+
+def log(msg:str,header:HEADER=SIMPLE,out:str=None)->str:
     t = datetime.now().strftime("%Y-%m-%d %X")
-    col,_ = os.get_terminal_size()
-    msg = f'{COLORS["red"]} [ERR]{COLORS["reset"]} {msg}'
-    print (f'{msg} {" "*(col-len(msg)-len(t))} [ {t} ]')
+    if out:
+        row = f'[{header.header}] {msg}{" "*(80-len(msg)-len(t))} [ {t} ]\n'
+        open(out,"a").write(row)
+    else:
+        msg = f'{header.color} [{header.header}]{COLORS["reset"]} {msg}'
+        col,_ = os.get_terminal_size()
+        line = f'{msg} {" "*(col-len(msg)-len(t))} [ {t} ]'
+        print (line)
 
-def warning(msg:str)->str:
-    t = datetime.now().strftime("%Y-%m-%d %X")
-    col,_ = os.get_terminal_size()
-    msg = f'{COLORS["yellow"]} [WRN]{COLORS["reset"]} {msg}'
-    print (f'{msg} {" "*(col-len(msg)-len(t))} [ {t} ]')
-
-def success(msg:str)->str:
-    t = datetime.now().strftime("%Y-%m-%d %X")
-    col,_ = os.get_terminal_size()
-    msg = f'{COLORS["green"]} [SUC]{COLORS["reset"]} {msg}'
-    print (f'{msg} {" "*(col-len(msg)-len(t))} [ {t} ]')
-
-def message(msg:str)->str:
-    t = datetime.now().strftime("%Y-%m-%d %X")
-    col,_ = os.get_terminal_size()
-    msg = f'{COLORS["blue"]} [MSG]{COLORS["reset"]} {msg}'
-    print (f'{msg} {" "*(col-len(msg)-len(t))} [ {t} ]')
-
-def custom(head:str,msg:str,color:str="white")->str:
-    t = datetime.now().strftime("%Y-%m-%d %X")
-    col,_ = os.get_terminal_size()
-    msg = f'{COLORS[color]} [{head}]{COLORS["reset"]} {msg}'
-    print (f'{msg} {" "*(col-len(msg)-len(t))} [ {t} ]')
-
-def test():
-    print (warning("WARNING TEST"))
-    print (error("ERROR TEST"))
-    print (message("MESSEGE TEST"))
-    print (success("SUCCESS TEST"))
-    print (custom("GET","request successfull !",))
-
-if __name__ == "__main__":
-    test()
