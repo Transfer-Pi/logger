@@ -1,6 +1,7 @@
 import time
 import os
 
+
 from datetime import datetime
 
 
@@ -48,4 +49,33 @@ def log(msg:str,header:HEADER=SIMPLE,out:str=None)->str:
         col,_ = os.get_terminal_size()
         line = f'{msg} {" "*(col-len(msg)-len(t))} [ {t} ]'
         print (line)
+
+class Logger:
+
+    def __init__(self,out:str=None):
+        self.out = out
+
+    def log(self,msg:str,header:HEADER=SIMPLE)->str:
+        t = datetime.now().strftime("%Y-%m-%d %X")
+        if self.out:
+            row = f'[{header.header}] {msg}{" "*(80-len(msg)-len(t))} [ {t} ]\n'
+            open(self.out,"a").write(row)
+        else:
+            msg = f'{header.color} [{header.header}]{COLORS["reset"]} {msg}'
+            col,_ = os.get_terminal_size()
+            line = f'{msg} {" "*(col-len(msg)-len(t))} [ {t} ]'
+            print (line)
+        
+    def success(self,msg:str):
+        self.log(msg,SUCCESS)
+
+    def error(self,msg:str):
+        self.log(msg,ERROR)
+
+    def message(self,msg:str):
+        self.log(msg,MESSAGE)
+
+    def warning(self,msg:str):
+        self.log(msg,WARNING)
+
 

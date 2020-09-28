@@ -11,4 +11,8 @@ def test_1():
     HEADER.header = "GET"
     log("request successfull !",HEADER)
 
+
+    logger = Logger()
+    logger.error("HEllo")
+
 test_1()
