@@ -29,7 +29,7 @@ class ERROR:
 
 class SUCCESS:
     color  = COLORS['green']
-    header = "ERR"
+    header = "SUC"
 
 class WARNING:
     color  = COLORS['yellow']
